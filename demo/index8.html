@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo 8</title>
+	<script src="../build/react.js"></script>
+	<script src="../build/react-dom.js"></script>
+	<script src="../build/browser.min.js"></script>
+</head>
+<style>
+	.likeBtn{
+		width: 100px;
+		height: 50px;
+	}
+</style>
+<body>
+	<div id="demo"></div>
+	<script type="text/babel">
+		let LikeBtn = React.createClass({
+			getInitialState:function(){
+				return {
+					isLiked:false
+				}
+				
+			},
+			handleClick:function(event){
+				this.setState({
+					isLiked:!this.state.isLiked
+				})
+			},
+			render:function(){
+				let text = this.state.isLiked ? "like" : "unlike";
+				return(
+					<div>
+						<div>your chioce is:{text}</div>
+						<button onClick={this.handleClick} className="likeBtn">chioce</button>
+					</div>
+				)
+			}
+		})
+		ReactDOM.render(
+			<LikeBtn />,
+			document.getElementById("demo")
+		)
+	</script>
+</body>
+</html>

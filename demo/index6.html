@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo 6 propTypes</title>
+	<script src="../build/react.js"></script>
+	<script src="../build/react-dom.js"></script>
+	<script src="../build/browser.min.js"></script>
+</head>
+<body>
+	<div id="demo"></div>
+	<script type="text/babel">
+		let HelloWorld = React.createClass({
+			getDefaultProps:function(){
+				return {
+					name:"Katy"
+				}
+			},
+			propTypes:{
+				name:React.PropTypes.string.isRequired
+			},
+			render:function(){
+				return (
+					<div>hello, {this.props.name}</div>
+				)
+			}
+		})
+		let data = "Katy";
+		ReactDOM.render(
+			<HelloWorld />,
+			document.getElementById("demo")
+		)
+	</script>
+</body>
+</html>

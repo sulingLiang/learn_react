@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo 2</title>
+	<script src="../build/react.js"></script>
+	<script src="../build/react-dom.js"></script>
+	<script src="../build/browser.min.js"></script>
+</head>
+<body>
+	<div id="demo"></div>
+	<script type="text/babel">
+		let arr = ["Katy","Jack","Rose"];
+		ReactDOM.render(
+            <div>
+                {arr.map((x,index)=>{
+            	    return <div key={index}>hello {x}</div>
+                })}
+		    </div>,
+		    document.getElementById("demo")
+		)
+		
+	</script>
+</body>
+</html>
