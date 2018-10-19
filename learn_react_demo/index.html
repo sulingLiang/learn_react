@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>react 生命周期</title>
+	<script src="../build/react.js"></script>
+	<script src="../build/react-dom.js"></script>
+	<script src="../build/browser.min.js"></script>
+</head>
+<body>
+	<div id="demo"></div>
+	<script type="text/babel">
+		let MyComponent = React.createClass({
+			getInitialState:function(){
+				return (
+					{isShow:true}
+				)
+			},
+			handleShow:function(){
+				this.setState({isShow:!this.state.isShow})
+			},
+			componentWillMount:function(){
+				console.log('component will mount');
+			},
+			componetDidMount:function(){
+				console.log('component did mount');
+			},
+			componentWillUnmount:function(){
+				console.log('component will unmount');
+			},
+			render:function(){
+				return(
+					<div>
+						<p>hello react</p>
+						<h1>{this.state.isShow?'hello world':null}</h1>
+						<button onClick={this.handleShow}>显示||隐藏</button>
+					</div>
+				)
+			}
+		})
+		ReactDOM.render(
+			<MyComponent />,
+			document.getElementById("demo")
+		)
+	</script>
+</body>
+</html>
