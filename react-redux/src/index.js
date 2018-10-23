@@ -4,46 +4,101 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-let appState = {
-	title:{
-		text:'React.js小书!!!',
-		color:'red'
-	},
-	content:{
-		text:'learn react!!!',
-		color:'green'
+function stateChanger(state,action){
+	if(!state){
+		return {
+			title:{
+				text:'React.js小书!!!',
+				color:'red'
+			},
+			content:{
+				text:'learn react!!!',
+				color:'green'
+			}
+		}
 	}
-}
-function dispatch(action){
 	switch (action.type){
-		case 'updata_title_text':
-			appState.title.text = action.text;
-			break;
-		case 'updata_title_color':
-			appState.title.color = action.color;
-			break;
+		case 'UPDATE_TITLE_TEXT':
+			return{
+				...state,
+				title:{
+					...state.title,
+					text:action.text
+				}
+			}
+		case 'UPDATE_TITLE_COLOR':
+			return{
+				...state,
+				title:{
+					...state.title,
+					color:action.color
+				}
+			}
 		default:
-			break;
+			return state
 	}
+}
+function themeReducer(state,action){
+	if(!state)return{
+		themeName:'red themeName',
+		themeColor:'red'
+	}
+	switch(action.type){
+		case 'UPDATE_TITLE_TEXT':
+			return{...state,themeName:action.themeName}
+		case 'UPDATE_TITLE_COLOR':
+			return{...state,themeColor:action.themeColor}
+		default:
+			return state
+	}
+}
+function createStore(reducer){
+	let state = null;
+	const listeners = [];
+	const subscribe = (listener) =>listeners.push(listener)
+	const getState=()=>state;
+	const dispatch=(action)=>{
+		state = stateChanger(state,action);
+		listeners.forEach((listener) => listener())
+	}
+	dispatch({})
+	return {getState,dispatch,subscribe}
+}
 
+function renderApp(newAppState,oldAppState={}){
+	if(newAppState === oldAppState)return
+	console.log('render App');
+	renderTitle(newAppState.title,oldAppState.title);
+	renderContent(newAppState.content,oldAppState.content);
 }
-function renderApp(appState){
-	renderTitle(appState.title);
-	renderContent(appState.content);
-}
-function renderTitle(title){
+
+function renderTitle(newTitle,oldTitle={}){
+	if(newTitle === oldTitle) return
+	console.log('rener title');
 	const titleDom = document.getElementById('title');
-	titleDom.innerHTML = title.text;
-	titleDom.style.color = title.color;
+	titleDom.innerHTML = newTitle.text;
+	titleDom.style.color = newTitle.color;
 }
-function renderContent(content){
+
+function renderContent(newContent,oldContent={}){
+	if(newContent === oldContent) return
+	console.log('render content');
 	const contentDom = document.getElementById('content');
-	contentDom.innerHTML = content.text;
-	contentDom.style.color = content.color;
+	contentDom.innerHTML = newContent.text;
+	contentDom.style.color = newContent.color;
 }
-renderApp(appState);
-dispatch({ type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》' }) // 修改标题文本
-dispatch({ type: 'UPDATE_TITLE_COLOR', color: 'blue' }) // 修改标题颜色
-renderApp(appState) // 把新的数据渲染到页面上
+
+const store = createStore(themeReducer);
+let oldState = store.getState();
+store.subscribe(()=>{
+	const newState = store.getState(); 
+	renderApp(newState, oldState);
+	oldState = newState
+})
+
+renderApp(store.getState()) // 把新的数据渲染到页面上
+store.dispatch({ type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》' }) // 修改标题文本
+store.dispatch({ type: 'UPDATE_TITLE_COLOR', color: 'blue' }) // 修改标题颜色
+
 
 serviceWorker.unregister();
