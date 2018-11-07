@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>react counter</title>
+	<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+	<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+	<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+	<div id="example"></div>
+	<script type='text/babel'>
+		class ControlPane extends React.Component{
+			constructor(props){
+				super(props);
+				this.initValue = [0,10,20];
+				const sum = this.initValue.reduce((a,b)=>a+b,0);
+				this.updateSum = this.updateSum.bind(this);
+				this.state = {
+					total:sum
+				}
+			}
+			updateSum(isAdd){
+				if(isAdd === 1){
+					this.setState({total:this.state.total+1})
+				}else{
+					this.setState({total:this.state.total-1})
+				}
+			}
+			render(){
+				return(
+					<div>
+						<Counter name = {`以${this.initValue[0]}为单位`} value={this.initValue[0]} onUpdate = {this.updateSum}/>
+						<Counter name = {`以${this.initValue[1]}为单位`} value={this.initValue[1]} onUpdate = {this.updateSum}/>
+						<Counter name = {`以${this.initValue[2]}为单位`} value={this.initValue[2]} onUpdate = {this.updateSum}/>
+						<hr/>
+						<div>{this.state.total}</div>
+					</div>
+				)
+			}
+		}
+		class Counter extends React.Component{
+			constructor(props){
+				super(props);
+				this.decrease = this.decrease.bind(this);
+				this.increase = this.increase.bind(this);
+				this.state = {
+					value:props.value,
+					counterName:props.name
+				}
+			}
+			decrease(){
+				this.setState({
+					value:this.state.value-1
+				})
+				this.props.onUpdate(-1)
+			}
+			increase(){
+				this.setState({
+					value:this.state.value+1
+				})
+				this.props.onUpdate(1)
+			}
+			render(){
+				return(
+					<div>
+						<span>{this.state.counterName}:</span>
+						<button onClick={this.increase}>+</button>
+						<span>{this.state.value}</span>
+						<button onClick={this.decrease}>-</button>
+					</div>
+				)
+			}
+		}
+		ReactDOM.render(
+			<ControlPane />,
+			document.getElementById('example')
+		)
+	</script>
+</body>
+</html>

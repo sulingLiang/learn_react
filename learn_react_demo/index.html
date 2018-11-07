@@ -13,7 +13,9 @@
 		let MyComponent = React.createClass({
 			getInitialState:function(){
 				return (
-					{isShow:true}
+					{
+						isShow:true
+					}
 				)
 			},
 			handleShow:function(){
@@ -33,7 +35,7 @@
 					<div>
 						<p>hello react</p>
 						<h1>{this.state.isShow?'hello world':null}</h1>
-						<button onClick={this.handleShow}>显示||隐藏</button>
+						<button onClick={this.handleShow}>{this.state.isShow?'显示':'隐藏'}</button>
 					</div>
 				)
 			}
